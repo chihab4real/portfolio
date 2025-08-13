@@ -15,6 +15,7 @@
     --border-color: rgba(0, 0, 0, 0.1);
     --shadow: rgba(0, 0, 0, 0.05);
     --card-bg: #ffffff;
+    --nav-height: 70px;
 }
 
 [data-theme="dark"] {
@@ -36,6 +37,7 @@ body {
     background-color: var(--bg-primary);
     overflow-x: hidden;
     transition: background-color 0.3s ease, color 0.3s ease;
+    padding-top: var(--nav-height); /* Offset for fixed navbar */
 }
 
 html {
@@ -71,7 +73,7 @@ html {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    height: var(--nav-height);
 }
 
 .nav-logo {
@@ -136,19 +138,26 @@ html {
     display: none;
     flex-direction: column;
     cursor: pointer;
+    width: 48px;
+    height: 48px;
+    justify-content: center;
+    align-items: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .bar {
-    width: 25px;
-    height: 3px;
+    width: 28px;
+    height: 4px;
     background: var(--text-primary);
-    margin: 3px 0;
+    margin: 4px 0;
+    border-radius: 2px;
     transition: 0.3s;
 }
 
 /* Hero Section */
 .hero {
-    min-height: 100vh;
+    min-height: calc(100vh - var(--nav-height));
     display: flex;
     align-items: center;
     background: linear-gradient(135deg, var(--accent-color) 0%, #764ba2 100%);
@@ -213,14 +222,19 @@ html {
 }
 
 .btn {
-    padding: 12px 24px;
-    border-radius: 8px;
+    padding: 16px 28px;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: 600;
     transition: all 0.3s ease;
     border: 2px solid transparent;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.1rem;
+    min-width: 48px;
+    min-height: 48px;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    position: relative;
 }
 
 .btn-primary {
@@ -298,6 +312,8 @@ html {
 .profile-photo {
     width: 100%;
     height: 100%;
+    max-width: 100vw;
+    max-height: 100vw;
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
@@ -358,6 +374,11 @@ html {
 .about {
     padding: 100px 0;
     background: var(--bg-secondary);
+}
+
+/* Ensure anchor links don't hide under fixed navbar */
+section {
+    scroll-margin-top: calc(var(--nav-height) + 16px);
 }
 
 .about-content {
@@ -804,7 +825,7 @@ html {
     .nav-menu {
         position: fixed;
         left: -100%;
-        top: 70px;
+    top: var(--nav-height);
         flex-direction: column;
         background-color: var(--card-bg);
         width: 100%;
@@ -836,13 +857,14 @@ html {
     }
 
     .hero-container {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 2rem;
+        grid-template-columns: 1.6fr auto; /* keep image next to text */
+        text-align: left;
+        align-items: center;
+        gap: 1.5rem;
     }
 
     .hero-buttons {
-        justify-content: center;
+        justify-content: flex-start;
         flex-wrap: wrap;
     }
 
@@ -901,18 +923,23 @@ html {
     }
 
     .image-placeholder {
-        width: 250px;
-        height: 250px;
+        width: 180px;
+        height: 180px;
     }
 
     .image-placeholder i {
-        font-size: 100px;
+    font-size: 72px;
     }
 }
 
 @media (max-width: 480px) {
     .container {
         padding: 0 15px;
+    }
+
+    img, .profile-photo {
+        max-width: 100%;
+        height: auto;
     }
 
     .hero-container {
@@ -924,7 +951,7 @@ html {
     }
 
     .hero-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     .hero-subtitle {
@@ -949,11 +976,30 @@ html {
 
     .hero-buttons {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
     }
 
     .btn {
         width: 200px;
         text-align: center;
+        min-width: 44px;
+        min-height: 44px;
     }
+
+    /* Keep image next to text even on very small screens, make it smaller */
+    .hero-container {
+        grid-template-columns: 1fr auto;
+        gap: 1rem;
+    }
+
+    .image-placeholder {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Touch highlight and tap target improvements */
+button, .btn, .nav-toggle, .nav-link, a {
+    -webkit-tap-highlight-color: rgba(37,99,235,0.15);
+    touch-action: manipulation;
 }
